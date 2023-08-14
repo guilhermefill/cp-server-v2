@@ -12,6 +12,7 @@ func main() {
 
 	r := mux.NewRouter()
 	routes.IndexHandler(r)
+	routes.AuthRoutes(r)
 	http.Handle("/", r)
 
 	srv := &http.Server{

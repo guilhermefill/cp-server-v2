@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/guilhermefill/cp-server-v2/pkg/config"
 	"github.com/guilhermefill/cp-server-v2/pkg/routes"
 )
 
@@ -31,6 +32,8 @@ func main() {
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
+
+	config.InitDB()
 
 	go func() {
 		if err := srv.ListenAndServe(); err != nil {

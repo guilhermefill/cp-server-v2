@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/guilhermefill/cp-server-v2/pkg/config"
+	"github.com/guilhermefill/cp-server-v2/pkg/models"
 	"github.com/guilhermefill/cp-server-v2/pkg/routes"
 )
 
@@ -26,14 +26,15 @@ func main() {
 	routes.PostRoutes(r)
 	http.Handle("/", r)
 
+	models.Client, _ = models.ConnectDB(context.Background())
+	defer models.Client.Disconnect(context.Background())
+
 	srv := &http.Server{
 		Addr:         ":5005",
 		Handler:      r,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
-
-	config.InitDB()
 
 	go func() {
 		if err := srv.ListenAndServe(); err != nil {

@@ -26,8 +26,10 @@ func main() {
 	routes.PostRoutes(r)
 	http.Handle("/", r)
 
-	models.Client, _ = models.ConnectDB(context.Background())
-	defer models.Client.Disconnect(context.Background())
+	mongoCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	models.Client, _ = models.ConnectDB(mongoCtx)
+	defer models.Client.Disconnect(mongoCtx)
+	defer cancel()
 
 	srv := &http.Server{
 		Addr:         ":5005",

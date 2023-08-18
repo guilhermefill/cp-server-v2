@@ -10,18 +10,18 @@ import (
 )
 
 type Post struct {
-	ID             primitive.ObjectID `bson:"_id,omitempty"`
-	Title          string             `bson:"title,omitempty"`
-	Description    string             `bson:"description,omitempty"`
-	ImageUrl       string             `bson:"imageUrl,omitempty"`
-	PlaylistUrl    string             `bson:"playlistUrl,omitempty"`
-	Text           string             `bson:"text,omitempty"`
-	FavouriteCount int                `bson:"favouriteCount,omitempty"`
-	Creator        string             `bson:"creator,omitempty"`
-	Mood           []string           `bson:"mood,omitempty"`
-	Distance       int                `bson:"distance,omitempty"`
-	Length         int                `bson:"length,omitempty"`
-	Location       string             `bson:"location,omitempty"`
+	ID             primitive.ObjectID `bson:"_id" json:"id"`
+	Title          string             `bson:"title" json:"title"`
+	Description    string             `bson:"description" json:"description"`
+	ImageUrl       string             `bson:"imageUrl" json:"imageUrl"`
+	PlaylistUrl    string             `bson:"playlistUrl" json:"playlist_url"`
+	Text           string             `bson:"text" json:"text"`
+	FavouriteCount int                `bson:"favouriteCount" json:"favourite_count"`
+	Creator        string             `bson:"creator" json:"creator"`
+	Mood           []string           `bson:"mood" json:"mood"`
+	Distance       int                `bson:"distance" json:"distance"`
+	Length         int                `bson:"length" json:"length"`
+	Location       string             `bson:"location" json:"location"`
 }
 
 func GetAllPosts() *[]Post {

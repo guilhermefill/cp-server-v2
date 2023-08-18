@@ -25,10 +25,12 @@ func GetAllPosts(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetPostByID(w http.ResponseWriter, r *http.Request) {
+	utils.InfoLog(r)
+
 	vars := mux.Vars(r)
 	id := vars["id"]
-	utils.InfoLog(r)
-	fmt.Fprintf(w, "this is the post by id route"+id)
+
+	fmt.Fprintf(w, "this is the post by id route "+id)
 }
 
 func GetCarouselPosts(w http.ResponseWriter, r *http.Request) {

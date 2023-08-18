@@ -10,14 +10,14 @@ import (
 )
 
 type User struct {
-	Id        primitive.ObjectID `bson:"_id"`
-	Avatar    string             `bson:"avatar"`
-	Email     string             `bson:"email"`
-	FirstName string             `bson:"firstName"`
-	LastName  string             `bson:"lastName"`
-	Username  string             `bson:"username"`
-	Password  string             `bson:"password"`
-	UserType  string             `bson:"userType"`
+	Id        primitive.ObjectID `bson:"_id" json:"id"`
+	Avatar    string             `bson:"avatar" json:"avatar"`
+	Email     string             `bson:"email" json:"email"`
+	FirstName string             `bson:"firstName" json:"first_name"`
+	LastName  string             `bson:"lastName" json:"last_name"`
+	Username  string             `bson:"username" json:"username"`
+	Password  string             `bson:"password" json:"password"`
+	UserType  string             `bson:"userType" json:"user_type"`
 }
 
 func GetUsers() *[]User {

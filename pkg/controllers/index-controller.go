@@ -10,7 +10,10 @@ import (
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	utils.InfoLog(r)
-	models.GetUsers()
+	users := models.GetUsers()
+	for _, user := range *users {
+		fmt.Println(user.Username, user.Email, user.Password, user.UserType, user.FirstName, user.LastName, user.Avatar)
+	}
 	fmt.Fprintf(w, "Hello World")
 }
 

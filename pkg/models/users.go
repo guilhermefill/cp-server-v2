@@ -2,7 +2,6 @@ package models
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -11,44 +10,38 @@ import (
 )
 
 type User struct {
-	_id        primitive.ObjectID `bson:"_id"`
-	avatar     string             `bson:"avatar"`
-	email      string             `bson:"email"`
-	favourites []string           `bson:"favourite,omitempty"`
-	firstName  string             `bson:"firstName"`
-	lastName   string             `bson:"lastName"`
-	username   string             `bson:"username"`
-	password   string             `bson:"password"`
-	userType   string             `bson:"userType"`
+	Id        primitive.ObjectID `bson:"_id"`
+	Avatar    string             `bson:"avatar"`
+	Email     string             `bson:"email"`
+	FirstName string             `bson:"firstName"`
+	LastName  string             `bson:"lastName"`
+	Username  string             `bson:"username"`
+	Password  string             `bson:"password"`
+	UserType  string             `bson:"userType"`
 }
 
 func GetUsers() *[]User {
 	var users []User
 	coll := Client.Database("cp-server").Collection("users")
 	findOptions := options.Find()
-	cursor, err := coll.Find(context.TODO(), bson.D{}, findOptions)
+
+	ctx := context.Background()
+
+	cursor, err := coll.Find(ctx, bson.M{}, findOptions)
 	if err != nil {
 		panic(err)
 	}
-	for cursor.Next(context.TODO()) {
-		var result bson.D
+
+	for cursor.Next(ctx) {
+		var result User
 		err := cursor.Decode(&result)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("cursor.Decode ERROR:", err)
 		}
-		for _, v := range result {
-			fmt.Println(v.Key, v.Value)
-		}
-		// do something with result....
+		users = append(users, result)
 	}
-	// if err = cursor.All(context.TODO(), &users); err != nil {
-	// 	panic(err)
-	// }
 
 	defer cursor.Close(context.TODO())
 
-	for _, user := range users {
-		fmt.Println(user._id, user.email, user.username, user.password, user.avatar, user.userType, user.firstName, user.lastName, user.favourites)
-	}
 	return &users
 }

@@ -29,7 +29,7 @@ func GetUsers() *[]User {
 
 	cursor, err := coll.Find(ctx, bson.M{}, findOptions)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	for cursor.Next(ctx) {
@@ -41,7 +41,7 @@ func GetUsers() *[]User {
 		users = append(users, result)
 	}
 
-	defer cursor.Close(context.TODO())
+	defer cursor.Close(ctx)
 
 	return &users
 }

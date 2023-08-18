@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -11,10 +12,15 @@ import (
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	utils.InfoLog(r)
 	users := models.GetUsers()
-	for _, user := range *users {
-		fmt.Println(user.Username, user.Email, user.Password, user.UserType, user.FirstName, user.LastName, user.Avatar)
+	res, err := json.Marshal(users)
+	if err != nil {
+		utils.ErrorLog(r)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
-	fmt.Fprintf(w, "Hello World")
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
 }
 
 func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {

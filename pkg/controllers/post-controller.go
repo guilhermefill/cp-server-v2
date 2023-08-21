@@ -30,7 +30,17 @@ func GetPostByID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	fmt.Fprintf(w, "this is the post by id route "+id)
+	post := models.GetPostById(id)
+
+	res, err := json.Marshal(post)
+	if err != nil {
+		utils.ErrorLog(r)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
 }
 
 func GetCarouselPosts(w http.ResponseWriter, r *http.Request) {

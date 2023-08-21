@@ -49,3 +49,21 @@ func GetAllPosts() *[]Post {
 
 	return &posts
 }
+
+func GetPostById(id string) *Post {
+	var post Post
+	coll := Client.Database("cp-server").Collection("posts")
+	ctx := context.Background()
+
+	objectId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = coll.FindOne(ctx, bson.M{"_id": objectId}).Decode(&post)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return &post
+}

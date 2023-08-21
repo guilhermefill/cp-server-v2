@@ -13,6 +13,11 @@ import (
 func GetAllPosts(w http.ResponseWriter, r *http.Request) {
 	utils.InfoLog(r)
 	posts := models.GetAllPosts()
+	if posts == nil {
+		utils.ErrorLog(r)
+		http.Error(w, "Error getting posts", http.StatusNotFound)
+		return
+	}
 	res, err := json.Marshal(posts)
 	if err != nil {
 		utils.ErrorLog(r)
@@ -31,6 +36,11 @@ func GetPostByID(w http.ResponseWriter, r *http.Request) {
 	id := vars["id"]
 
 	post := models.GetPostById(id)
+	if post == nil {
+		utils.ErrorLog(r)
+		http.Error(w, "Error getting post", http.StatusNotFound)
+		return
+	}
 
 	res, err := json.Marshal(post)
 	if err != nil {
@@ -38,6 +48,7 @@ func GetPostByID(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)

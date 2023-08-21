@@ -12,6 +12,11 @@ import (
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	utils.InfoLog(r)
 	users := models.GetUsers()
+	if users == nil {
+		utils.ErrorLog(r)
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
 	res, err := json.Marshal(users)
 	if err != nil {
 		utils.ErrorLog(r)

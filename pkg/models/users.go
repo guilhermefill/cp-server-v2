@@ -3,6 +3,7 @@ package models
 import (
 	"context"
 	"log"
+	"os"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -29,14 +30,16 @@ func GetUsers() *[]User {
 
 	cursor, err := coll.Find(ctx, bson.M{}, findOptions)
 	if err != nil {
-		log.Fatal(err)
+		log.New(os.Stdout, "coll.Find ERROR:"+err.Error()+"\t"+"", 1)
+		return nil
 	}
 
 	for cursor.Next(ctx) {
 		var result User
 		err := cursor.Decode(&result)
 		if err != nil {
-			log.Fatal("cursor.Decode ERROR:", err)
+			log.New(os.Stdout, "cursor.Decode ERROR:"+err.Error()+"\t"+"", 1)
+			return nil
 		}
 		users = append(users, result)
 	}
